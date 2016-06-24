@@ -21,7 +21,7 @@ def insertStream(now, viewers, stream, gameName, streamTitle, rank, saveName):
 						"title": streamTitle,
 						"game": gameName,
 						"rank": rank,
-						"preview": saveName
+			#			"preview": saveName
 					}
 				]
 			}
@@ -33,7 +33,7 @@ def insertStream(now, viewers, stream, gameName, streamTitle, rank, saveName):
 				"title": streamTitle,
 				"game": gameName,
 				"rank": rank,
-				"preview": saveName
+		#		"preview": saveName
 				}
 		db.streams.update_one({"name" : stream}, {"$push" : {"stats" : newStat}})
 
@@ -54,8 +54,8 @@ def getTop():
 				gameName = content['streams'][i]['game']
 				streamTitle = content['streams'][i]['channel']['status']
 				saveName = "images/" + str(stream) + str(now) + ".jpg"
-				image = urllib.URLopener()
-				image.retrieve(content['streams'][i]['preview']['large'], saveName)
+			#	image = urllib.URLopener()
+			#	image.retrieve(content['streams'][i]['preview']['large'], saveName)
 				insertStream(now, viewers, stream, gameName, streamTitle, i+1, saveName)
 				print "#" + str(i+1) + " "  + str(viewers) + " watching " + stream + " play " +  gameName + " at " + now + " " + streamTitle
 		time.sleep(300)
