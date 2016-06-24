@@ -8,7 +8,7 @@ from pymongo import MongoClient
 client = MongoClient()
 db = client.stats
 
-def insertStream(now, viewers, stream, gameName, streamTitle, rank):
+def insertStream(now, viewers, stream, gameName, streamTitle, rank, saveName):
 	exists = db.streams.find({"name" : stream})
 	if exists.count() == 0:
 		db.streams.insert_one(
@@ -20,7 +20,8 @@ def insertStream(now, viewers, stream, gameName, streamTitle, rank):
 						"viewers": viewers,
 						"title": streamTitle,
 						"game": gameName,
-						"rank": rank
+						"rank": rank,
+						"preview": saveName
 					}
 				]
 			}
@@ -31,7 +32,8 @@ def insertStream(now, viewers, stream, gameName, streamTitle, rank):
 				"viewers": viewers,
 				"title": streamTitle,
 				"game": gameName,
-				"rank": rank
+				"rank": rank,
+				"preview": saveName
 				}
 		db.streams.update_one({"name" : stream}, {"$push" : {"stats" : newStat}})
 
@@ -51,12 +53,12 @@ def getTop():
 				stream = content['streams'][i]['channel']['display_name']
 				gameName = content['streams'][i]['game']
 				streamTitle = content['streams'][i]['channel']['status']
-#				saveName = "images/" + str(stream) + str(now) + ".jpg"
-#				image = urllib.URLopener()
-#				image.retrieve(content['streams'][i]['preview']['large'], saveName)
-				insertStream(now, viewers, stream, gameName, streamTitle, i+1)
+				saveName = "images/" + str(stream) + str(now) + ".jpg"
+				image = urllib.URLopener()
+				image.retrieve(content['streams'][i]['preview']['large'], saveName)
+				insertStream(now, viewers, stream, gameName, streamTitle, i+1, saveName)
 				print "#" + str(i+1) + " "  + str(viewers) + " watching " + stream + " play " +  gameName + " at " + now + " " + streamTitle
-		time.sleep(60)
+		time.sleep(300)
 
 def main():
 	getTop()
