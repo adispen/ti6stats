@@ -5,7 +5,7 @@ import urllib
 from datetime import datetime
 from pymongo import MongoClient
 
-client = MongoClient()
+client = MongoClient("mongodb://adispen:kidsw2134@ds021884.mlab.com:21884/stats")
 db = client.stats
 
 def insertStream(now, viewers, stream, gameName, streamTitle, rank, saveName):
@@ -47,7 +47,7 @@ def getTop():
 			return
 		else:
 			nowFull = datetime.now()
-			now = nowFull.strftime('%Y-%m-%d %H:%M:%S')
+			now = nowFull.strftime('%H.%M.%S.%Y.%m.%d')
 			for i, streamObj in enumerate(content['streams']):
 				viewers = content['streams'][i]['viewers']
 				stream = content['streams'][i]['channel']['display_name']
